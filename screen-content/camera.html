@@ -1,0 +1,162 @@
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%:
+  }
+
+  #camera,
+  #camera--view,
+  #camera--sensor,
+  #camera--output {
+    position: fixed;
+    height: 100%;
+    width: 100%: object-fit: cover;
+  }
+
+  #camera--view,
+  #camera--sensor,
+  #camera--output {
+    transform: scaleX(-1);
+    filter: FlipH;
+  }
+
+  #camera--trigger {
+    width: 200px;
+    background-color: black;
+    color: white;
+    font-size: 16px;
+    border-radius: 30px;
+    border: none;
+    padding: 15px 20px;
+    text-align: center;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    position: fixed;
+    bottom: 30px;
+    left: calc(50% - 100px);
+  }
+
+  .taken {
+    height: 100px !important;
+    width: 100px !important;
+    transition: all 0.5s ease-in;
+    border: solid 3px white;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    top: 80px;
+    right: 20px;
+    z-index: 2;
+  }
+</style>
+
+<!-- Camera -->
+
+
+    <body>
+
+        <video id="player" controls autoplay></video>
+        <button id="capture">Capture</button>
+        <canvas id="canvas" width=320 height=240></canvas>
+        <div id="imageData"></div>
+        
+        
+
+
+
+      <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+        
+        <script>
+          const supported = 'mediaDevices' in navigator;
+          const player = document.getElementById('player');
+          const canvas = document.getElementById('canvas');
+          const context = canvas.getContext('2d');
+          const captureButton = document.getElementById('capture');
+          const dataDiv = document.getElementById('imageData');
+          const visionApiEndpoint = "https://vision.googleapis.com/v1/images:annotate";
+          var requestBody;
+          
+          const constraints = {
+            video: true,
+          };
+        
+          captureButton.addEventListener('click', () => {
+            // Draw the video frame to the canvas.
+            context.drawImage(player, 0, 0, canvas.width, canvas.height);
+            
+            getImageData("FACE_DETECTION");
+          });
+        
+          // Attach the video stream to the video element and autoplay.
+          navigator.mediaDevices.getUserMedia(constraints)
+            .then((stream) => {
+              player.srcObject = stream;
+            });
+            
+            
+          function getImageData(type) {
+             requestBody = {
+                "requests":[
+                  {
+                    "image":{
+                      "content":canvas.toDataURL().split(",")[1]
+                    },
+                    "features":[
+                      {
+                        "type": type,
+                        "maxResults":10
+                      }
+                    ]
+                  }
+                ]
+              };
+            $.ajax({
+                method: "POST",
+                contentType: "application/json",
+                url: visionApiEndpoint + "?key=AIzaSyBvfJaYrmBNr8w9MPqikZCT1mI2dKey5nE",
+                data: JSON.stringify(requestBody)
+              })
+                .done(function(response) {
+                  console.log(response);
+                  $("#imageData").html("<pre>" + JSON.stringify(response)   + "</pre>");
+                
+                  var faceVertices = response.responses[0].faceAnnotations[0].boundingPoly.vertices;
+                  console.log(faceVertices);
+                  var topLeft = faceVertices[0];
+                  var bottomRight = faceVertices[2];
+                  console.log(bottomRight, bottomRight.x, topLeft, topLeft.x);
+                  
+                  var faceWidth = bottomRight.x - topLeft.x;
+                  var faceHeight = bottomRight.y - topLeft.y;
+                  var sourceX = topLeft.x;
+                  var sourceY = topLeft.y;
+                  var destWidth = faceWidth;
+                  var destHeight = faceHeight;
+                  var destX = 0;
+                  var destY = 0;
+                  
+                   var newCanvas = $("<canvas>");
+                   newCanvas.attr("width", faceWidth);
+                   newCanvas.attr("height", faceHeight);
+                   
+                   var newContext = newCanvas[0].getContext("2d");
+
+                  newContext.drawImage(canvas, sourceX, sourceY, faceWidth, faceHeight, destX, destY, faceWidth, faceHeight); 
+                  
+                  $("body").append(newCanvas);
+                  
+                  
+                  
+                  
+                });
+        
+          }
+            
+    
+    
+        </script>
+    </body>
+</html>
