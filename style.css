@@ -1,0 +1,44 @@
+html, body {
+  margin: 0;
+  max-width: 100%;
+  background-color:aliceblue;
+  text-color: red;
+}
+
+#contentArea {
+  text-align: center;
+  padding: 2%;
+  max-width: 100%;
+}
+
+.template {
+  display: none;
+}
+
+.mdc-top-app-bar__row {
+  background-color:rgb(80, 71, 82);
+}
+
+.mdc-top-app-bar__title {
+  font-size: 190%;
+  text-decoration:overline;
+  text-decoration:underline;
+
+  
+}
+
+.mdc-typography--body2 {
+  padding: 20px;
+}
+
+.mdc-image-list {
+  max-width: 80%;
+}
+
+.mdc-list-item__text {
+  text-align: center;
+}
+
+.mdc-list-item__secondary-text {
+  white-space: normal;
+}
