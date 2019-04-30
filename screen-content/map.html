@@ -11,8 +11,7 @@
 </style>
 
 <h2 class="mdc-typography--headline2">Map of Chicago</h2>
-<h4 class="mdc-typography--headline4">Click around to see Coffee shops!</h4>
-<p class="mdc-typography--Subtitle2"><b style="color: red;">Red</b> Markers are Resturants while <b style="color: blue;">Blue</b> Markers are Landmarks</p>
+<h4 class="mdc-typography--headline4">Check out all the Parks for free entertainment</h4>
 
 
 <div id="map-border">
@@ -33,7 +32,7 @@
   let hereLandmarksAPI = "https://reverse.geocoder.api.here.com/6.2/reversegeocode.json?app_id=5Yw2IcQnYuz36feJwnox&app_code=YmywVPigLQTjLkFm47tKMA&mode=retrieveLandmarks&prox=41.8781,-87.6298,10000"
   console.log(`1st API used is from here Technologies: ${hereLandmarksAPI}`);
 
-  let cityOfChicagoAPI = "https://data.cityofchicago.org/resource/4ijn-s7e5.json?facility_type=Restaurant&$limit=50";
+  let cityOfChicagoAPI = "https://data.cityofchicago.org/api/views/INLINE/rows.json?accessType=DOWNLOAD&$limit=50";
   console.log(`2nd API used is from city of chicago: ${cityOfChicagoAPI}`);
 
   // style for Google map
@@ -41,13 +40,13 @@
       featureType: 'all',
       elementType: 'all',
       stylers: [{
-          invert_lightness: true
+          invert_lightness: false
         },
         {
-          saturation: '-9'
+          saturation: '0'
         },
         {
-          lightness: '0'
+          lightness: '5'
         },
         {
           visibility: 'simplified'
@@ -138,12 +137,12 @@
           lng: parseFloat(v.longitude)
         }
 
-        if (v.facility_type === "Restaurant") {
+        if (v.facility_type === "Parks") {
           marker = new google.maps.Marker({
             map: map,
             position: location,
             icon: {
-              url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+              url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
             }
           })
         } else {
@@ -178,7 +177,7 @@
               map: map,
               position: location,
               icon: {
-                url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
               }
             })
           };
@@ -191,11 +190,6 @@
             infowindow.open(map, marker);
           });
 
-          // let textBox = document.getElementById("input-search-bar").innerHTML;
-          // console.log(textBox);
-          // if (textBox.innerHTML > 0) {
-          //   marker.setMap(null);
-          // }
 
         }
 
@@ -204,4 +198,4 @@
   };
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACQ-Se5XgECXNgPfbY88TBNMYoijTtSUI&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACQ-Se5XgECXNgPfbY88TBNMYoijTtSUI&callback=initMap"" async defer></script>
