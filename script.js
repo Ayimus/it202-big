@@ -1,28 +1,27 @@
 var navItems = [{
     "label": "About",
     "screen": "about",
-    "icon": "info"
+    "icon": "fingerprint"
   },
   {
     "label": "Weather",
     "screen": "weather",
-    "icon": "library_books"
+    "icon": "cloud"
   },
-  "divider",
   {
     "label": "Map",
     "screen": "map",
-    "icon": "map"
+    "icon": "language"
   },
   {
     "label": "Take a Photo",
     "screen": "camera",
-    "icon": "camera"
+    "icon": "photo"
   },
   {
-    "label": "❤ Subsribe ❤",
+    "label": "Join the Mailing List",
     "screen": "subscribe",
-    "icon": "email"
+    "icon": "grade"
   }
 
 ];
@@ -54,12 +53,12 @@ $(document).ready(function() {
   });
 
   // camera shortcut with material.io icon
-  $("#camera-icon").on("click", function() {
+  $("#photo-icon").on("click", function() {
     loadScreen("camera");
   });
 
   // subscribe shortcut with material.io icon
-  $("#email-icon").on("click", function() {
+  $("#grade-icon").on("click", function() {
     loadScreen("subscribe");
     
 
